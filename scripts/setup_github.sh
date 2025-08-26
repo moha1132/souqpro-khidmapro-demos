@@ -1,20 +1,26 @@
 #!/usr/bin/env bash
 set -euo pipefail
-REPO="alafsi/souqpro-khidmapro-demos"
 cd "$(dirname "$0")/.."
-# Requires: gh auth login (already)
-if ! gh auth status >/dev/null 2>&1; then
-  echo "GitHub CLI is not authenticated. Run: gh auth login" >&2
-  exit 1
-fi
-if gh repo view "$REPO" >/dev/null 2>&1; then
-  echo "Remote repo exists: $REPO"
+USER_NAME=${GITHUB_USER:-$(gh api user -q .login)}
+REPO_NAME=${GITHUB_REPO_NAME:-souqpro-khidmapro-demos}
+FULL_REPO="$USER_NAME/$REPO_NAME"
+
+if gh repo view "$FULL_REPO" >/dev/null 2>&1; then
+  echo "Remote repo exists: $FULL_REPO"
   git remote remove origin >/dev/null 2>&1 || true
-  git remote add origin "https://github.com/$REPO.git"
+  git remote add origin "https://github.com/$FULL_REPO.git"
 else
-  gh repo create "$REPO" --public --source . --remote origin --description "SouqPro & KhidmaPro demo kits (Laravel, RTL, Apple-inspired UI)" --push
+  if ! gh repo create "$FULL_REPO" --public --source . --remote origin --description "SouqPro & KhidmaPro demo kits (Laravel, RTL, Apple-inspired UI)" --push; then
+    TS=$(date +%Y%m%d-%H%M%S)
+    ALT="$USER_NAME/${REPO_NAME}-$TS"
+    echo "Name taken, creating: $ALT"
+    gh repo create "$ALT" --public --source . --remote origin --description "SouqPro & KhidmaPro demo kits (Laravel, RTL, Apple-inspired UI)" --push
+    FULL_REPO="$ALT"
+  fi
 fi
-# Ensure main branch is default and push
+
 git branch -M main
+# Ensure we push latest state
 git push -u origin main
-echo "Done. Repo: https://github.com/$REPO"
+
+echo "Done. Repo: https://github.com/$FULL_REPO"

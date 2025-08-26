@@ -34,3 +34,8 @@ Route::middleware(['auth','role:pro'])->group(function () {
 Route::middleware(['auth','role:admin'])->group(function () {
     Route::get('admin', \App\Http\Controllers\Admin\DashboardController::class)->name('admin.dashboard');
 });
+
+
+Route::post('/payments/webhook', [\App\Http\Controllers\InvoiceController::class, 'webhook'])->name('payments.webhook');
+Route::get('/payments/success', [\App\Http\Controllers\InvoiceController::class, 'success'])->name('payments.success');
+Route::get('/payments/cancel', [\App\Http\Controllers\InvoiceController::class, 'cancel'])->name('payments.cancel');
