@@ -1,3 +1,5 @@
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/moha1132/souqpro-khidmapro-demos)
+
 # SouqPro & KhidmaPro — Demos
 
 - SouqPro: Laravel 12, Breeze, RTL, Products CRUD, SQLite + start.sh + Dockerfile
