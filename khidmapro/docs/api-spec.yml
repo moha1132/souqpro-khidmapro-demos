@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: KhidmaPro API
+  version: 1.0.0
+  description: REST API for bookings, payments, and invoicing (Arabic RTL UI)
+servers:
+  - url: https://api.example.com/khidmapro
+security:
+  - bearerAuth: []
+paths:
+  /auth/login:
+    post:
+      summary: Login and receive JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200': { description: OK }
+  /services:
+    get:
+      summary: List services
+      responses:
+        '200': { description: OK }
+  /availability:
+    get:
+      summary: Get available slots for a service and date
+      parameters:
+        - in: query
+          name: serviceId
+          schema: { type: integer }
+        - in: query
+          name: date
+          schema: { type: string, format: date }
+      responses:
+        '200': { description: OK }
+  /bookings:
+    post:
+      summary: Create booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingInput'
+      responses:
+        '201': { description: Created }
+  /invoices/{id}:
+    get:
+      summary: Get invoice details
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: OK }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    BookingInput:
+      type: object
+      required: [serviceId, startsAt]
+      properties:
+        serviceId: { type: integer }
+        startsAt: { type: string, format: date-time }
+        notes: { type: string, nullable: true }
+        coupon: { type: string, nullable: true }

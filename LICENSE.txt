@@ -1,0 +1,21 @@
+Commercial License (One-time Purchase)
+
+You (the Licensee) are granted a non-exclusive, non-transferable license to use the Product in accordance with the license tier purchased:
+
+1) Regular License
+- Use in a single end product for yourself or a single client
+- No redistribution/sublicensing of source code
+- You may modify the source for your project needs
+
+2) Extended License
+- Use in multiple end products for multiple clients
+- No redistribution/sublicensing of source code as a template/toolkit
+- You may modify the source for client needs
+
+General Terms
+- No claim of authorship
+- No use in illegal content
+- No reselling the source code as-is
+- Support: 30 days bug fixes, updates: 6 months
+
+© 2025 SouqPro & KhidmaPro by Seller. All rights reserved.

@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: SouqPro API
+  version: 1.0.0
+  description: REST API for multi-vendor ecommerce (Arabic RTL UI)
+servers:
+  - url: https://api.example.com/souqpro
+security:
+  - bearerAuth: []
+paths:
+  /auth/login:
+    post:
+      summary: Login and receive JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200': { description: OK }
+  /products:
+    get:
+      summary: List products
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+        - in: query
+          name: category
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Create product (vendor)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201': { description: Created }
+  /products/{id}:
+    get:
+      summary: Get product details
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: OK }
+    patch:
+      summary: Update product (vendor)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200': { description: OK }
+  /cart:
+    get:
+      summary: Get current cart
+      responses:
+        '200': { description: OK }
+    post:
+      summary: Add item to cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId: { type: integer }
+                variantId: { type: integer, nullable: true }
+                quantity: { type: integer }
+      responses:
+        '200': { description: OK }
+  /checkout:
+    post:
+      summary: Create order and start payment
+      responses:
+        '201': { description: Created }
+  /orders:
+    get:
+      summary: List my orders
+      responses:
+        '200': { description: OK }
+  /vendors/me/orders:
+    get:
+      summary: List vendor orders
+      responses:
+        '200': { description: OK }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Product:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        price: { type: number, format: float }
+        salePrice: { type: number, format: float, nullable: true }
+        sku: { type: string }
+        stock: { type: integer }
+    ProductInput:
+      type: object
+      required: [name, price]
+      properties:
+        name: { type: string }
+        description: { type: string }
+        price: { type: number, format: float }
+        salePrice: { type: number, format: float, nullable: true }
+        categoryId: { type: integer, nullable: true }

@@ -1,0 +1,32 @@
+
+services:
+  - type: web
+    name: khidmapro-demo
+    env: docker
+    rootDir: khidmapro-app
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: STRIPE_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+  - type: web
+    name: souqpro-demo
+    env: docker
+    rootDir: souqpro-app
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false

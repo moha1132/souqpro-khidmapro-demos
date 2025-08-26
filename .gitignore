@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Node
+**/node_modules/
+
+# Laravel/PHP
+**/vendor/
+**/.env
+**/.env.*
+**/storage/*.key
+**/storage/framework/*
+**/storage/logs/*
+**/bootstrap/cache/*
+
+# Builds
+**/public/build/
+
+# Editor
+.vscode/
+.idea/
